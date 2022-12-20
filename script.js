@@ -66,9 +66,23 @@ const bubbleColors = [
 // getting the the bubbles from dom
 let myBubbles = [];
 
-let score = 0;
+// for storing and displaying score and high score
+const score = document.getElementById("score");
+const highScore = document.getElementById("highScore");
+let currentHighScore = localStorage.getItem("highScore") || 0;
+let currentScore = 0;
 
 let missBubble = 0;
+
+// for removing the click event listener from the window
+let eventListnerController;
+
+// for removing the game loop
+let myLoop;
+
+let heart = document.querySelectorAll(".fa-heart");
+// converting heart node list to array
+heart = Array.from(heart);
 
 // function for creating the bubble
 const createBubble = () => {
@@ -131,12 +145,42 @@ const gameLoop = () => {
   if (difference > 1000 / frameRate) {
     startTime = currentTime;
     createBubble();
+    endGame();
   }
-  window.requestAnimationFrame(gameLoop);
+  myLoop = window.requestAnimationFrame(gameLoop);
 };
 
-// running the game loop
-gameLoop();
+// function to start the game
+const startGame = (event) => {
+  const text = event.target.innerText;
 
-// function for adding the window event listner for user key input
-window.addEventListener("keyup", burstBubble);
+  // if text is start game
+  if (text === "Start Game") {
+    // function for adding the window event listner for user key input
+    eventListnerController = window.addEventListener("keyup", burstBubble);
+
+    // changing the game button text to restart game
+    gameBtn.innerText = "Restart Game";
+
+    // starting the game loop
+    gameLoop();
+  } else if (text === "Restart Game") {
+    window.location.reload();
+  }
+};
+
+const endGame = () => {
+  // checking that the game is over or not
+  if (missBubble > 5) {
+    window.cancelAnimationFrame(myLoop);
+    window.removeEventListener("click", burstBubble);
+  }
+
+  // marking red for lost life
+  for (let i = 0; i < missBubble; i++) {
+    heart[i].style.color = "red";
+  }
+};
+
+const gameBtn = document.getElementById("gameBtn");
+gameBtn.addEventListener("click", startGame);

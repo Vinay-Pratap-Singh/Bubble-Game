@@ -10,7 +10,8 @@ body{
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-  background-color: gray;
+  background-color: rgb(226, 226, 226);
+  font-family: 'Poppins', sans-serif;
 }
 
 .bubble {
@@ -33,4 +34,61 @@ body{
   100% {
     bottom: 100%;
   }
+}
+
+#container{
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  position: absolute;
+  bottom: 0;
+  z-index: 10;
+  width: 100%;
+  padding: 15px 0;
+  background-color: rgb(218, 218, 218);
+}
+
+li{
+  list-style: none;
+}
+
+#container ul{
+  display: flex ;
+  align-items: center;
+  gap: 10px;
+}
+
+.fa-heart{
+  font-size: 25px;
+  color: green;
+}
+
+#scoreCard{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#scoreCard div{
+  font-weight: 500;
+  font-size: 16px;
+}
+
+#scoreCard div span{
+  font-weight: 700;
+  font-size: 18px;
+}
+
+#gameBtn{
+  padding: 10px 20px;
+  font-weight: 700;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 2px 2px 2px gray,-2px -2px 2px gray;
+  transition: all 0.3s ease-in-out;
+}
+
+#gameBtn:hover{
+  scale: 1.1;
 }
