@@ -69,6 +69,9 @@ const bubbleBody = document.getElementById("bubbleWrapper");
 // getting the the bubbles from dom
 let myBubbles = [];
 
+// for game loop rendering
+let frameRate = 0.5;
+
 // for storing and displaying score and high score
 const score = document.getElementById("score");
 const highScore = document.getElementById("highScore");
@@ -98,9 +101,6 @@ const createBubble = () => {
 
   // creating the new bubble with random values
   const mydiv = document.createElement("div");
-  mydiv.style.width = "50px";
-  mydiv.style.height = "50px";
-  mydiv.style.bottom = "0px";
   mydiv.innerText = alphabetArray[randomAlphabet];
   mydiv.style.backgroundColor = bubbleColors[randomColor];
   mydiv.style["-webkit-animation-duration"] = `${randomTime}s`;
@@ -154,6 +154,11 @@ const burstBubble = (event) => {
           highScore.innerText = currentHighScore;
         }
       }
+
+      // increasing the speed after every 20 points
+      if (currentScore % 20 == 0) {
+        frameRate += 0.1;
+      }
       return;
     }
   }
@@ -173,7 +178,6 @@ const burstBubble = (event) => {
 
 // creating the game loop
 let startTime = new Date().getTime();
-let frameRate = 0.5;
 
 // game loop for running the game
 const gameLoop = () => {
@@ -210,13 +214,13 @@ const endGame = () => {
   // checking that the game is over or not
   if (missBubble >= 5) {
     window.cancelAnimationFrame(myLoop);
-    window.removeEventListener("click", burstBubble);
+    window.removeEventListener("click", startGame);
     bubbleBody.innerHTML = `<p class='gameOver'>Game Over</p>`;
   }
 
       // marking red for lost life
       for (let i = 0; i < missBubble; i++) {
-        heart[i].style.color = "red";
+        heart[4-i].style.color = "red";
     }
 };
 
