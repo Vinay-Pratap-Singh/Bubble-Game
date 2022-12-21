@@ -63,6 +63,9 @@ const bubbleColors = [
   "gray",
 ];
 
+// for appending the bubbles inside them
+const bubbleBody = document.getElementById("bubbleWrapper");
+
 // getting the the bubbles from dom
 let myBubbles = [];
 
@@ -70,6 +73,7 @@ let myBubbles = [];
 const score = document.getElementById("score");
 const highScore = document.getElementById("highScore");
 let currentHighScore = localStorage.getItem("highScore") || 0;
+highScore.innerText = currentHighScore;
 let currentScore = 0;
 
 let missBubble = 0;
@@ -104,7 +108,7 @@ const createBubble = () => {
   mydiv.style.boxShadow =
     "inset -5px -5px 10px rgba(0, 0, 0, 1),1px 1px 1px white,-1px -1px 1px white";
   mydiv.classList.add("bubble");
-  document.body.appendChild(mydiv);
+  bubbleBody.appendChild(mydiv);
 
   // updating the myBubbles list with new ones
   myBubbles = document.querySelectorAll(".bubble");
@@ -112,7 +116,7 @@ const createBubble = () => {
 
   // for deleting the bubble on animation end (bubble reach on top)
   mydiv.addEventListener("webkitAnimationEnd", () => {
-    document.body.removeChild(mydiv);
+    bubbleBody.removeChild(mydiv);
     missBubble += 1;
     console.log(missBubble);
   });
@@ -124,11 +128,32 @@ const burstBubble = (event) => {
   for (let i = 0; i < myBubbles.length; i++) {
     if (myBubbles[i].innerText === key) {
       // popping the bubble
-      document.body.removeChild(myBubbles[i]);
+      bubbleBody.removeChild(myBubbles[i]);
 
       // updating the bubble list after popping the bubble
       myBubbles = document.querySelectorAll(".bubble");
       myBubbles = Array.from(myBubbles);
+
+      // updating the game score 
+      currentScore += 1;
+      if (currentScore < 10) {
+        score.innerText = "0" + currentScore;
+      }
+      else {
+        score.innerText = currentScore;
+      }
+
+      // setting the high score
+      if (currentScore > currentHighScore) {
+        currentHighScore = currentScore;
+        localStorage.setItem("highScore", currentHighScore);
+        if (currentHighScore < 10) {
+          highScore.innerText = "0" + currentHighScore;
+        }
+        else {
+          highScore.innerText = currentHighScore;
+        }
+      }
       break;
     }
   }
@@ -174,6 +199,7 @@ const endGame = () => {
   if (missBubble > 5) {
     window.cancelAnimationFrame(myLoop);
     window.removeEventListener("click", burstBubble);
+    bubbleBody.innerHTML = "";
   }
 
   // marking red for lost life
