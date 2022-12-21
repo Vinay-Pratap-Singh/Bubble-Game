@@ -206,18 +206,18 @@ const startGame = (event) => {
   }
 };
 
-const endGame = () => {
+const endGame = () => {  
   // checking that the game is over or not
   if (missBubble >= 5) {
     window.cancelAnimationFrame(myLoop);
     window.removeEventListener("click", burstBubble);
-    bubbleBody.innerHTML = "<p class='gameOver'>Game Over</p>";
+    bubbleBody.innerHTML = `<p class='gameOver'>Game Over</p>`;
   }
 
-  // marking red for lost life
-  for (let i = 0; i < missBubble; i++) {
-    heart[i].style.color = "red";
-  }
+      // marking red for lost life
+      for (let i = 0; i < missBubble; i++) {
+        heart[i].style.color = "red";
+    }
 };
 
 const gameBtn = document.getElementById("gameBtn");
