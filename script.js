@@ -76,7 +76,12 @@ let frameRate = 0.5;
 const score = document.getElementById("score");
 const highScore = document.getElementById("highScore");
 let currentHighScore = localStorage.getItem("highScore") || 0;
-highScore.innerText = currentHighScore;
+if (currentHighScore < 10) {
+  highScore.innerText = "0" + currentHighScore;
+} else {
+  highScore.innerText = currentHighScore;
+}
+
 let currentScore = 0;
 
 let missBubble = 0;
@@ -210,7 +215,7 @@ const startGame = (event) => {
   }
 };
 
-const endGame = () => {  
+const endGame = () => {
   // checking that the game is over or not
   if (missBubble >= 5) {
     window.cancelAnimationFrame(myLoop);
@@ -218,10 +223,10 @@ const endGame = () => {
     bubbleBody.innerHTML = `<p class='gameOver'>Game Over</p>`;
   }
 
-      // marking red for lost life
-      for (let i = 0; i < missBubble; i++) {
-        heart[4-i].style.color = "red";
-    }
+  // marking red for lost life
+  for (let i = 0; i < missBubble; i++) {
+    heart[4 - i].style.color = "red";
+  }
 };
 
 const gameBtn = document.getElementById("gameBtn");
