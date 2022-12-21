@@ -118,13 +118,13 @@ const createBubble = () => {
   mydiv.addEventListener("webkitAnimationEnd", () => {
     bubbleBody.removeChild(mydiv);
     missBubble += 1;
-    console.log(missBubble);
   });
 };
 
 // function for popping up the bubble if key matches
 const burstBubble = (event) => {
   const key = event.key;
+
   for (let i = 0; i < myBubbles.length; i++) {
     if (myBubbles[i].innerText === key) {
       // popping the bubble
@@ -134,12 +134,13 @@ const burstBubble = (event) => {
       myBubbles = document.querySelectorAll(".bubble");
       myBubbles = Array.from(myBubbles);
 
-      // updating the game score 
+      // updating the game score
       currentScore += 1;
-      if (currentScore < 10) {
+      if (currentScore < 0 && currentScore > -10) {
+        score.innerText = "-0" + Math.abs(currentScore);
+      } else if (currentScore < 10 && currentScore >= 0) {
         score.innerText = "0" + currentScore;
-      }
-      else {
+      } else {
         score.innerText = currentScore;
       }
 
@@ -149,12 +150,23 @@ const burstBubble = (event) => {
         localStorage.setItem("highScore", currentHighScore);
         if (currentHighScore < 10) {
           highScore.innerText = "0" + currentHighScore;
-        }
-        else {
+        } else {
           highScore.innerText = currentHighScore;
         }
       }
-      break;
+      return;
+    }
+  }
+
+  // if the key is not shift and caps lock then decreaing the score value
+  if (key !== "Shift" && key !== "CapsLock") {
+    currentScore -= 1;
+    if (currentScore <= 0 && currentScore > -10) {
+      score.innerText = "-0" + Math.abs(currentScore);
+    } else if (currentScore < 10 && currentScore > 0) {
+      score.innerText = "0" + currentScore;
+    } else {
+      score.innerText = currentScore;
     }
   }
 };
@@ -196,10 +208,10 @@ const startGame = (event) => {
 
 const endGame = () => {
   // checking that the game is over or not
-  if (missBubble > 5) {
+  if (missBubble >= 5) {
     window.cancelAnimationFrame(myLoop);
     window.removeEventListener("click", burstBubble);
-    bubbleBody.innerHTML = "";
+    bubbleBody.innerHTML = "<p class='gameOver'>Game Over</p>";
   }
 
   // marking red for lost life

@@ -105,3 +105,13 @@ li{
 #gameBtn:hover{
   scale: 1.1;
 }
+
+.gameOver{
+  font-weight: 800;
+  font-size: 35px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  display: none;
+}
