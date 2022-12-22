@@ -96,6 +96,10 @@ let heart = document.querySelectorAll(".fa-heart");
 // converting heart node list to array
 heart = Array.from(heart);
 
+// getting the music to play
+const popUp = new Audio("./music/popUp.mp3");
+const gameMusic = new Audio("./music/gameMusic.mp3");
+
 // function for creating the bubble
 const createBubble = () => {
   // getting all the random values for bubble
@@ -121,6 +125,13 @@ const createBubble = () => {
 
   // for deleting the bubble on animation end (bubble reach on top)
   mydiv.addEventListener("webkitAnimationEnd", () => {
+    // playing the pop up sound
+    if (!popUp.paused) {
+      popUp.currentTime = 0;
+    }
+    popUp.play();
+
+    // removing the bubble and increasing the missBubble
     bubbleBody.removeChild(mydiv);
     missBubble += 1;
   });
@@ -132,6 +143,12 @@ const burstBubble = (event) => {
 
   for (let i = 0; i < myBubbles.length; i++) {
     if (myBubbles[i].innerText === key) {
+      // playing the pop up sound 
+      if (!popUp.paused) {
+        popUp.currentTime = 0;
+      }
+      popUp.play();
+      
       // popping the bubble
       bubbleBody.removeChild(myBubbles[i]);
 
@@ -208,6 +225,12 @@ const startGame = (event) => {
     // changing the game button text to restart game
     gameBtn.innerText = "Restart Game";
 
+    // playing the music
+    gameMusic.volume = 0.5;
+    gameMusic.loop = true;
+    gameMusic.play();
+    
+
     // starting the game loop
     gameLoop();
   } else if (text === "Restart Game") {
@@ -220,6 +243,11 @@ const endGame = () => {
   if (missBubble >= 5) {
     window.cancelAnimationFrame(myLoop);
     window.removeEventListener("click", startGame);
+
+    // stoping the game music
+    gameMusic.pause();
+
+    // displaying the game over message
     bubbleBody.innerHTML = `<p class='gameOver'>Game Over</p>`;
   }
 
